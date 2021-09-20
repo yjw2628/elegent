@@ -1,5 +1,7 @@
-#include<bits/stdc++.h>
-
+#include<iostream>
+#include<string>
+#include<fstream>
+ 
 using namespace std;
 
 string key_word[32] =
@@ -14,7 +16,7 @@ string str_txt;
 //执行预处理 ，把 1."...” 2.//... 3./* ... */ 处理掉	 
 void Pretreatment( )
 {
-	for ( int i = 0,j = i; i < str_txt.length(); i++ )
+	for ( int i = 0,j = i; i < (int)str_txt.length(); i++ )
 	{
 		if ( str_txt[i] == '/' && str_txt[i+1] == '/' )
 		{
@@ -105,7 +107,7 @@ void if_else_find(int level_1)
 	{
 		c[ebp] = 1;
 		ebp ++;
-		for ( int i = if_position+1; i < str_txt.length(); i++ )
+		for ( int i = if_position+1; i < (int)str_txt.length(); i++ )
 		{
 			if ( str_txt.compare(i,7,"else if") == 0)
 			{
