@@ -2,6 +2,7 @@
 #include<string>
 #include<fstream>
  
+// 
 using namespace std;
 
 string key_word[32] =
