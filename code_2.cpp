@@ -9,39 +9,39 @@ string key_word[32] =
 	"long","register","return","short","signed","sizeof","stastic",
 	"struct","switch","typedef","union","unsigned","void","volatile","while"
 };
-string b;
+string str_txt;
 
 //执行预处理 ，把 1."...” 2.//... 3./* ... */ 处理掉	 
 void Pretreatment( )
 {
-	for(int i=0,j=i;i<b.length();i++)
+	for ( int i = 0,j = i; i < str_txt.length(); i++ )
 	{
-		if(b[i] == '/' && b[i+1] == '/')
+		if ( str_txt[i] == '/' && str_txt[i+1] == '/' )
 		{
-			j=i;
-			while( b[j] != '\n')
+			j = i;
+			while ( str_txt[j] != '\n' )
 			{
-				j++;
+				j ++;
 			}
-			b.erase(i,j-i+1);
+			str_txt.erase(i,j - i + 1);
 		}
-		if(b[i] == '/' && b[i+1] == '*')
+		if ( str_txt[i] == '/' && str_txt[i+1] == '*' )
 		{
-			j=i+2;
-			while( b[j] != '*' )
+			j = i + 2;
+			while ( str_txt[j] != '*' )
 			{
-				j++;
+				j ++;
 			}
-			b.erase(i,j+2-i);
+			str_txt.erase(i,j+2-i);
 		}
-		if(b[i] == '"')
+		if ( str_txt[i] == '"')
 		{
-			j=i+1;
-			while( b[j] != '"')
+			j = i+1;
+			while ( str_txt[j] != '"' )
 			{
-				j++;
+				j ++;
 			}
-			b.erase(i,j-i+1);
+			str_txt.erase(i,j-i+1);
 		}
 	}
 }
@@ -50,92 +50,93 @@ void Pretreatment( )
 void keyword_find( )
 {
 	int total=0;
-	for(int i=0;i<32;i++)
+	for ( int i=0; i<32; i++ )
 	{
 		int count = 0;
-		size_t position = b.find(key_word[i]);
-		while( position != b.npos )
+		size_t position = str_txt.find(key_word[i]);
+		while ( position != str_txt.npos )
 		{
-			count++;
-			position = b.find(key_word[i],position+1);
+			count ++;
+			position = str_txt.find(key_word[i],position+1);
 		}
 		total += count;
 	}
-	printf("total num: %d\n",total);	
+	printf ("total num: %d\n",total);	
 }
 
 //查找有几组switch-case结构并输出各组case个数
 void switch_case_find()
 {
- 	size_t switch_position = b.find(key_word[25]); 
+ 	size_t switch_position = str_txt.find(key_word[25]); 
 	size_t case_position;
 	int switch_num = 0;
 	int case_num[100] = {0};
-	while( switch_position != b.npos )
+	while ( switch_position != str_txt.npos )
 	{
-		switch_num++;
-		case_position = b.find(key_word[2],switch_position);
-		while( case_position != b.npos )
+		switch_num ++;
+		case_position = str_txt.find(key_word[2],switch_position);
+		while ( case_position != str_txt.npos )
 		{
-			case_num[switch_num-1]++;
-			case_position = b.find(key_word[2],case_position+1);
+			case_num[switch_num-1] ++;
+			case_position = str_txt.find(key_word[2],case_position+1);
 		}
-		switch_position = b.find(key_word[25],switch_position+1);
+		switch_position = str_txt.find(key_word[25],switch_position+1);
 	}
-	for(int i=0;i<switch_num-1;i++)
+	for ( int i=0; i < switch_num - 1; i++ )
 	{
 		case_num[i] -= case_num[i+1];
 	}
-	cout<<"switch num: "<<switch_num<<endl;
-	cout<<"case num: ";
-	for(int i=0;i<switch_num;i++)
+	cout << "switch num: " << switch_num << endl;
+	cout << "case num: ";
+	for ( int i=0; i<switch_num; i++)
 	{
-		cout<<case_num[i]<<" ";
-	}cout<<endl;
+		cout << case_num[i] << " ";
+	}
+	cout << endl;
 } 
 //查找有几组if-else/if-elseif-else 结构
 void if_else_find(int level_1)
 {
-	int c[100]={0};
-	int head=0,ebp=0;
-	int if_else=0,if_elseif_else=0;
-	size_t if_position = b.find(key_word[15]);
-	if( if_position != b.npos )
+	int c[100] = {0};
+	int head = 0,ebp = 0;
+	int if_else = 0,if_elseif_else = 0;
+	size_t if_position = str_txt.find(key_word[15]);
+	if ( if_position != str_txt.npos )
 	{
 		c[ebp] = 1;
-		ebp++;
-		for(int i = if_position+1;i < b.length(); i++)
+		ebp ++;
+		for ( int i = if_position+1; i < str_txt.length(); i++ )
 		{
-			if( b.compare(i,7,"else if") == 0)
+			if ( str_txt.compare(i,7,"else if") == 0)
 			{
 				c[ebp] = 2;
 				ebp ++;
 				i += 7;
 			}
-			else if( b.compare(i,2,"if") == 0 )
+			else if ( str_txt.compare(i,2,"if") == 0 )
 			{
 				c[ebp] = 1;
 				ebp ++;
 				i += 2;
 			}
-			else if( b.compare(i,4,"else") == 0)
+			else if ( str_txt.compare(i,4,"else") == 0)
 			{
-				int j=ebp-1;
-				if( c[j] != 1 && c[j] == 2 )
+				int j = ebp-1;
+				if ( c[j] != 1 && c[j] == 2 )
 				{
-					while( c[j] != 1 )
+					while ( c[j] != 1 )
 					{
 						j--;
 					}
-					int ebp_1=j;
-					for( j;j<ebp;j++)
+					int ebp_1 = j;
+					for ( j; j<ebp; j++)
 					{
-						c[j]=0;
+						c[j] = 0;
 					}
 					ebp = ebp_1;
 					if_elseif_else ++;
 				}
-				else if( c[j] == 1)
+				else if ( c[j] == 1 )
 				{
 					if_else ++;
 					c[j] = 0;
@@ -146,36 +147,35 @@ void if_else_find(int level_1)
 
 		}
 	}
-	if(level_1 >= 3)cout<<"if-else num: "<<if_else<<endl;
-	 if(level_1 >= 4)
-	cout<<"if-elseif-else num: "<<if_elseif_else<<endl;
+	if ( level_1 >= 3 ) cout << "if-else num: " << if_else << endl;
+	if ( level_1 == 4 )	cout << "if-elseif-else num: " << if_elseif_else << endl;
 }
  
 int main()
 {
-	int count=0;
-	char file_path[100];
+	int count = 0;
+	char file_path[100] = {'\0'};
 	int level;
-	cin.getline(file_path,100);
+	cin.getline (file_path,100);
 	cin >> level;
 	fstream file;
-	file.open(file_path);
-	string a;
-	while(file.good())
+	file.open (file_path);
+	string temp;
+	while ( file.good() )
 	{
-		getline(file,a);		
-		b=b+a+'\n';
+		getline(file,temp);		
+		str_txt = str_txt + temp + '\n';
 	}
 	
-	//预处理，
+	//预处理
 	Pretreatment();	
 	//统计关键字数量 
 	keyword_find();
-	if(level > 1)
+	if ( level > 1 )
 	{
 	 	//查找switch-case结构
 		switch_case_find();
-		if(level > 2)
+		if ( level > 2 )
 		{
 			//查找有几组if-else结构
 			if_else_find( level );
