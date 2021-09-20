@@ -183,7 +183,7 @@ int main()
 			if_else_find( level );
 		}  
 	}
-	file.close();
+	file.close(); //╧ь╠унд╪Ч 
 	return 0;
 }
 
