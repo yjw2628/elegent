@@ -71,7 +71,7 @@ int main()
 
 	cout<<"预处理后的结果如下"<<endl;
 	cout<<b<<endl;
-	
+	//
 	//统计关键字数量 
 	size_t position;
 	for(int i=0;i<32;i++)
